@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String?
+  token      String?  @unique
+  created_at DateTime @default(now())
+  wordcount  Int      @default(0)
+  text       Text[]
+}
+
+model Text {
+  id                Int      @id @default(autoincrement())
+  content_raw       String
+  content_justified String?
+  created_at        DateTime @default(now())
+  author            User     @relation(fields: [author_id], references: [id])
+  author_id         Int
+}
