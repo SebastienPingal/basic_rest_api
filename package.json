@@ -2,10 +2,11 @@
   "name": "basic_rest_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "npx prisma migrate dev --name migrated"
+    "migrate": "npx prisma migrate dev --name migrated",
+    "dev": "nodemon src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,8 @@
   },
   "dependencies": {
     "@prisma/client": "4.15.0",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1"
   }
 }

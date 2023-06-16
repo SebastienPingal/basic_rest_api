@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `wordcap` INTEGER NOT NULL DEFAULT 80000;

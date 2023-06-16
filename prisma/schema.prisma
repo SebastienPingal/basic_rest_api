@@ -13,10 +13,11 @@ datasource db {
 model User {
   id         Int      @id @default(autoincrement())
   email      String   @unique
-  name       String?
+  password   String
   token      String?  @unique
   created_at DateTime @default(now())
-  wordcount  Int      @default(0)
+  word_count  Int      @default(0)
+  word_cap    Int      @default(80000)
   text       Text[]
 }
 
