@@ -1,5 +1,5 @@
 import express from 'express'
-import user_router from './entities/user/user.router'
+import user_router from './entities/user/token/token.router'
 
 const app = express()
     

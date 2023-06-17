@@ -13,19 +13,8 @@ datasource db {
 model User {
   id         Int      @id @default(autoincrement())
   email      String   @unique
-  password   String
-  token      String?  @unique
+  token      String   @unique @default(uuid())
   created_at DateTime @default(now())
-  word_count  Int      @default(0)
-  word_cap    Int      @default(80000)
-  text       Text[]
-}
-
-model Text {
-  id                Int      @id @default(autoincrement())
-  content_raw       String
-  content_justified String?
-  created_at        DateTime @default(now())
-  author            User     @relation(fields: [author_id], references: [id])
-  author_id         Int
+  word_count Int      @default(0)
+  word_cap   Int      @default(80000)
 }

@@ -29,6 +29,12 @@ node_modules
 # Debug log from npm
 npm-debug.log
 
+# Elastic Beanstalk Files
+.elasticbeanstalk
+
+# prisma 
+prisma/migrations
+
 .DS_Store
 
 .env
