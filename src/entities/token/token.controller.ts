@@ -4,7 +4,6 @@ import user from '../../models/user'
 export default class token_controller {
     static async provide_token(req: Request, res: Response) {
         try {
-            console.log('req.body: ', req.body)
             const { email } = req.body;
             const this_user = await user.get_user_by_email(email) || await user.create_user(email)
             const token = this_user.token
