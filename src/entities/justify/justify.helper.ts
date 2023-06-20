@@ -52,8 +52,6 @@ export default class justify_helper {
 
                 // if the word is a new line, I add the spaces and reset the line_length
                 if (index === words.length - 1) {
-                    console.log('HELLOO')
-                    console.log('words_to_add_spaces: ', words_to_add_spaces)
                     lines.push(words_to_add_spaces.join(' '))
                     line_length = 0
                     words_to_add_spaces.length = 0

@@ -6,8 +6,8 @@ import justify_helper from "./justify.helper"
 export default class justify_controller {
     static async justify_text(req: RequestWithUser, res: Response) {
         try {
-            const this_user = req.user as User
             console.log('req.user: ', req.user)
+            const this_user = req.user as User
             const text = req.body
             let justified_text = ''
             const words_in_text = await justify_helper.count_words(text)
@@ -23,6 +23,7 @@ export default class justify_controller {
             catch (error) {
                 const typed_error = error as Error
                 res.status(402).json({ error: typed_error.message })
+                return
             }
 
             justified_text = await justify_helper.justify_text(text)
@@ -31,11 +32,6 @@ export default class justify_controller {
                 this_user.id,
                 (this_user.word_count + words_in_text)
             )
-
-            console.log('=============text=========== ')
-            console.log(text)
-            console.log('========justified_text======: ')   
-            console.log(justified_text)
             res.json({ words_remaining, justified_text })
 
         } catch (error) {
