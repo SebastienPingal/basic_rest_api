@@ -1,6 +1,7 @@
 import { Request, Response} from 'express'
 import user from '../../models/user'
 import jwt from 'jsonwebtoken'
+import token_helper from './token.helper'
 
 export default class token_controller {
     static async provide_token(req: Request, res: Response) {
@@ -12,11 +13,20 @@ export default class token_controller {
             if (!jwtSecret) throw new Error('JWT_SECRET is not defined')
 
             const this_user = await user.get_user_by_email(email) || await user.create_user(email)
-            const token = jwt.sign(
-                { id: this_user.id },
-                jwtSecret,
-                { expiresIn: '24h' }
-            )
+            let token = ''
+
+            if (!this_user.token || token_helper.is_token_expired(this_user.token)) {
+                token = jwt.sign(
+                    { id: this_user.id },
+                    jwtSecret,
+                    { expiresIn: '24h' }
+                )
+                await user.set_user_token(this_user.id, token)
+                await user.set_user_word_count(this_user.id, 0)
+            } else {
+                token = this_user.token
+            }
+
             res.json({ token })
 
         } catch (error) {

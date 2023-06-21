@@ -40,7 +40,7 @@ export default class user {
         }
     }
 
-    static async update_user_word_count(id: number, word_count: number) {
+    static async set_user_word_count(id: number, word_count: number) {
         try {
             const user = await prisma.user.update({
                 where: {
@@ -69,6 +69,22 @@ export default class user {
             return user
         } catch (error) {
             throw new Error('Error while setting user cap')
+        }
+    }
+
+    static async set_user_token(id: number, token: string) {
+        try {
+            const user = await prisma.user.update({
+                where: {
+                    id
+                },
+                data: {
+                    token
+                }
+            })
+            return user
+        } catch (error) {
+            throw new Error('Error while setting user token')
         }
     }
 }

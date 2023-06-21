@@ -30,7 +30,7 @@ export default class justify_controller {
 
             justified_text = await justify_helper.justify_text(text)
 
-            await user.update_user_word_count(
+            await user.set_user_word_count(
                 this_user.id,
                 (this_user.word_count + words_in_text)
             )
