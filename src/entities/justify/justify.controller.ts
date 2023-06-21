@@ -1,13 +1,15 @@
 import { Request, Response } from 'express'
-import { RequestWithUser, User } from '../../../types'
 import user from '../../models/user'
 import justify_helper from "./justify.helper"
+import type { User } from '../../../types'
 
 export default class justify_controller {
-    static async justify_text(req: RequestWithUser, res: Response) {
+    static async justify_text(req: Request, res: Response) {
         try {
             console.log('req.user: ', req.user)
             const this_user = req.user as User
+            if (!this_user) throw new Error('User is required')
+
             const text = req.body
             let justified_text = ''
             const words_in_text = await justify_helper.count_words(text)

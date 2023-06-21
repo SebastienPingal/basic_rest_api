@@ -13,7 +13,6 @@ datasource db {
 model User {
   id         Int      @id @default(autoincrement())
   email      String   @unique
-  token      String   @unique @default(uuid())
   created_at DateTime @default(now())
   word_count Int      @default(0)
   word_cap   Int      @default(80000)

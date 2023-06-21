@@ -1,6 +1,7 @@
 import express from 'express'
 import token_router from './entities/token/token.router'
 import justify_router from './entities/justify/justify.router'
+import my_passport from './utils/passport.config'
 
 const app = express()
 
@@ -12,4 +13,4 @@ app.listen(3000, () => {
 })
 
 app.use('/token', token_router)
-app.use('/justify', justify_router)
+app.use('/justify', my_passport.authenticate('jwt', { session: false }), justify_router) 

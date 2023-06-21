@@ -1,10 +1,4 @@
-import { Request } from 'express';
-
-export interface RequestWithUser extends  Request {
-    user?: User | null
-}
-
-interface User {
+export interface User {
     id: number
     email: string
     token: string

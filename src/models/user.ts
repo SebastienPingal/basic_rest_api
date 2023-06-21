@@ -40,19 +40,6 @@ export default class user {
         }
     }
 
-    static async get_user_by_token ( token: string) {
-        try {
-            const this_user = await prisma.user.findUnique({
-                where: {
-                    token
-                }
-            })
-            return this_user
-        } catch (error) {
-            throw new Error("Error token, doesn't match any user")
-        }
-    }   
-
     static async update_user_word_count(id: number, word_count: number) {
         try {
             const user = await prisma.user.update({

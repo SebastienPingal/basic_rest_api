@@ -1,9 +1,8 @@
 // import justify_controller from "../../src/entities/justify/justify.controller"
-// import { RequestWithUser } from "../../types";
 
 // test("should justify text corectly", async () => {
 //     // @ts-ignore
-//     const req = new Request() as RequestWithUser
+//     const req = new Request() 
 //     const res = new Response()
     
 //     req.user = {
