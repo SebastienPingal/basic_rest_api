@@ -3,13 +3,13 @@ export default class justify_helper {
         return text.split(' ').length
     }
 
-    static async check_user_quota(word_cap: number, word_count: number, words_in_text: number) {
+    static check_user_quota(word_cap: number, word_count: number, words_in_text: number) {
         if (word_count + words_in_text > word_cap) {
             throw new Error("Payment Required")
         }
     }
 
-    static async justify_text(text: string) {
+    static justify_text(text: string) {
         const paragraphs = text.split('\n')
         const justified_paragraphs: string[] = []
 
@@ -31,6 +31,7 @@ export default class justify_helper {
 
                     words_to_add_spaces.forEach((word_to_add_spaces, index) => {
                         line += word_to_add_spaces
+
 
                         if (index !== words_in_line - 1) {
                             const spaces_after_word = Math.floor(spaces_to_add / (words_in_line - 1 - index))

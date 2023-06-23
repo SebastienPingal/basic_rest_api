@@ -13,4 +13,4 @@ app.listen(3000, () => {
 })
 
 app.use('/token', token_router)
-app.use('/justify', my_passport.authenticate('jwt', { session: false }), justify_router) 
+app.use('/justify', justify_router) 
