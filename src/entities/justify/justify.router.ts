@@ -7,8 +7,8 @@ const router = express.Router()
 
 router.post(
     '/',
-    check_text_plain_type,
     my_passport.authenticate('jwt', { session: false }),
+    check_text_plain_type,
     justify_controller.justify_text
 )
 

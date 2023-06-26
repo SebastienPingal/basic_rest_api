@@ -9,7 +9,7 @@ const options = {
 
 const my_passport = passport.use(
     new JwtStrategy(options, async (payload, done) => {
-
+        if (!payload.id) return done(null, false)
         try {
             const this_user = await user.get_user(payload.id)
             if (!this_user) return done(null, false)

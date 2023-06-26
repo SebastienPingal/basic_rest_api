@@ -34,10 +34,10 @@ export default class justify_controller {
                 this_user.id,
                 (this_user.word_count + words_in_text)
             )
+
             console.log('+++++ justify_text done +++++')
             res.json({ words_remaining, justified_text })
             
-
         } catch (error) {
             const typed_error = error as Error
             res.status(500).json({ error: typed_error.message })

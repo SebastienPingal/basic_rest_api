@@ -1,57 +1,68 @@
 import justify_router from "../../../src/entities/justify/justify.router"
-import { getMockReq, getMockRes } from "@jest-mock/express"
-import { Request, Response } from "express"
-import justify_controller from "../../../src/entities/justify/justify.controller"
-import axios, { responseEncoding } from "axios"
+import request from "supertest"
+import { Request, Response, NextFunction } from "express"
+import express from "express"
+import justify_controller_class from "../../../src/entities/justify/justify.controller"
+import { check_text_plain_type } from "../../../src/utils/middlewares"
+import jwt from "jsonwebtoken"
+
+jest.mock('../../../src/entities/justify/justify.controller')
+jest.mock('../../../src/utils/middlewares')
 
 let token = ''
+const jwtSecret = process.env.JWT_SECRET
+if (!jwtSecret) throw new Error('JWT_SECRET is not defined')
 
-beforeAll(async () => {
-    const { data } = await axios.post(
-        "http://localhost:3000/token",
-        { email: "bob@bob.bob" }
-    )
-    token = data.token
-})
+describe("justify_router", () => {
+    let app: express.Application
+    const mock_check_text_plain_type = check_text_plain_type as jest.Mock
+    const mock_justify_text = justify_controller_class.justify_text as jest.Mock
 
-test("should trigger justify_controller when text/plain", async () => {
-    const req = getMockReq({
-        method: "POST",
-        url: "/",
-        headers: {
-            "content-type": "text/plain",
-            "authorization": `Bearer ${token}`,
-        },
+    beforeAll(async () => {
+        app = express()
+        app.use(express.text({ type: 'text/plain' }))
+        app.use(justify_router)
+        token = jwt.sign(
+            { id: 1 },
+            jwtSecret,
+            { expiresIn: '24h' }
+        )
     })
-    req.body = "This is a test text"
 
-    const { res, next } = getMockRes({
-        json: jest.fn(),
-    })
-    jest.mock("../../../src/entities/justify/justify.controller", () => {
-        justify_text: jest.fn().mockImplementation( async() => {
-            return "This is a test text"
+    it("should trigger all the middleware and then the controller", async () => {
+        mock_check_text_plain_type.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            next()
         })
+        mock_justify_text.mockImplementationOnce((req: Request, res: Response) => {
+            res.json({})
+        })
+
+        await request(app)
+            .post('/')
+            .set('Authorization', `Bearer ${token}`)
+            .set('Content-Type', 'text/plain')
+            .send('This is a test')
+            .expect(200)
+            
+        expect(mock_check_text_plain_type).toHaveBeenCalledTimes(1)
+        expect(mock_justify_text).toHaveBeenCalledTimes(1)
+            
     })
-    await justify_router(req, res, next)
 
-    expect(res.json).toHaveBeenCalledWith({ words_remaining: 0, justified_text: "This is a test text" })
+    it("should return 401 if no token is provided", async () => {
+        await request(app)
+            .post('/')
+            .set('Content-Type', 'text/plain')
+            .send('This is a test')
+            .expect(401)
     })
 
-// test("should error 400 when contentType isn't text/plain", async () => {
-    
-//     const req = getMockReq( {
-//         headers: { "content-type": "application/json" },
-//     })
-//     const { res, next } = getMockRes()
-//     const res = {
-//         status: jest.fn(),
-//         send: jest.fn(),
-//     };
-//     const next = jest.fn();
-
-
-//     expect(res.status).toHaveBeenCalledWith(400)
-//     expect(res.send).toHaveBeenCalledWith("Server requires text/plain")
-// }
-   
+    it("should return 401 if the token is invalid", async () => {
+        await request(app)
+            .post('/')
+            .set('Authorization', `Bearer invalid_token`)
+            .set('Content-Type', 'text/plain')
+            .send('This is a test')
+            .expect(401)
+    })
+})
