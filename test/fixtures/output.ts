@@ -1,4 +1,4 @@
-Longtemps, je me suis couché de bonne heure. Parfois, à peine ma bougie éteinte,
+const output = `Longtemps, je me suis couché de bonne heure. Parfois, à peine ma bougie éteinte,
 mes  yeux se  fermaient si vite  que je  n’avais pas  le temps  de me  dire: «Je
 m’endors.»  Et, une demi-heure après, la  pensée qu’il  était temps  de chercher
 le  sommeil m’éveillait; je  voulais poser le  volume que je  croyais avoir dans
@@ -22,4 +22,6 @@ les  distances, me  décrivait l’étendue de  la campagne  déserte où  le vo
 se hâte vers  la station prochaine; et le petit chemin  qu’il suit va être gravé
 dans son souvenir par l’excitation qu’il doit à des lieux nouveaux,  à des actes
 inaccoutumés, à la causerie récente et aux adieux sous la lampe étrangère qui le
-suivent encore dans le silence de la nuit, à la douceur prochaine du retour.
+suivent encore dans le silence de la nuit, à la douceur prochaine du retour.`
+
+export default output

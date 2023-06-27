@@ -9,11 +9,12 @@ import jwt from "jsonwebtoken"
 jest.mock('../../../src/entities/justify/justify.controller')
 jest.mock('../../../src/utils/middlewares')
 
-let token = ''
-const jwtSecret = process.env.JWT_SECRET
-if (!jwtSecret) throw new Error('JWT_SECRET is not defined')
+
 
 describe("justify_router", () => {
+    let token = ''
+    const jwtSecret = process.env.JWT_SECRET
+    if (!jwtSecret) throw new Error('JWT_SECRET is not defined')
     let app: express.Application
     const mock_check_text_plain_type = check_text_plain_type as jest.Mock
     const mock_justify_text = justify_controller_class.justify_text as jest.Mock
@@ -34,10 +35,10 @@ describe("justify_router", () => {
             next()
         })
         mock_justify_text.mockImplementationOnce((req: Request, res: Response) => {
-            res.json({})
+            res.json({test: 'test'})
         })
 
-        await request(app)
+        const response = await request(app)
             .post('/')
             .set('Authorization', `Bearer ${token}`)
             .set('Content-Type', 'text/plain')
@@ -46,6 +47,7 @@ describe("justify_router", () => {
             
         expect(mock_check_text_plain_type).toHaveBeenCalledTimes(1)
         expect(mock_justify_text).toHaveBeenCalledTimes(1)
+        expect(response.body).toEqual({test: 'test'})
             
     })
 
@@ -61,6 +63,36 @@ describe("justify_router", () => {
         await request(app)
             .post('/')
             .set('Authorization', `Bearer invalid_token`)
+            .set('Content-Type', 'text/plain')
+            .send('This is a test')
+            .expect(401)
+    })
+
+    it("should error if user is not found", async () => {
+        const wrong_user_token = jwt.sign(
+            { id: 9999999999 },
+            jwtSecret,
+            { expiresIn: '24h' }
+        )
+
+        await request(app)
+            .post('/')
+            .set('Authorization', `Bearer ${wrong_user_token}`)
+            .set('Content-Type', 'text/plain')
+            .send('This is a test')
+            .expect(401)
+    })
+
+    it("should error if no id in payload", async () => {
+        const wrong_user_token = jwt.sign(
+            { },
+            jwtSecret,
+            { expiresIn: '24h' }
+        )
+
+        await request(app)
+            .post('/')
+            .set('Authorization', `Bearer ${wrong_user_token}`)
             .set('Content-Type', 'text/plain')
             .send('This is a test')
             .expect(401)

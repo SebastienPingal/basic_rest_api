@@ -7,6 +7,7 @@ export default class justify_helper {
         if (word_count + words_in_text > word_cap) {
             throw new Error("Payment Required")
         }
+        return true
     }
 
     static justify_text(text: string) {
@@ -14,7 +15,7 @@ export default class justify_helper {
         const justified_paragraphs: string[] = []
 
         paragraphs.forEach((paragraph) => {
-            const words = paragraph.split(' ')
+            const words = paragraph.trim().split(' ')
             const lines: string[] = []
             const words_to_add_spaces: string[] = []
             let line_length = 0
@@ -23,9 +24,9 @@ export default class justify_helper {
                 let line = ''
 
                 // if the line is full, I add the spaces
-                if (line_length + words_to_add_spaces.length + 1 > 80) {
+                if (line_length + word.length + 1 > 80) {
                     // I substract the length of the spaces from line_length because I don't want to count them
-                    const line_length_without_spaces = line_length - words_to_add_spaces.length
+                    const line_length_without_spaces = line_length - words_to_add_spaces.length + 1
                     let spaces_to_add = 80 - line_length_without_spaces
                     const words_in_line = words_to_add_spaces.length
 
@@ -34,7 +35,7 @@ export default class justify_helper {
 
 
                         if (index !== words_in_line - 1) {
-                            const spaces_after_word = Math.floor(spaces_to_add / (words_in_line - 1 - index))
+                            const spaces_after_word = Math.ceil(spaces_to_add / (words_in_line - 1 - index))
                             line += ' '.repeat(spaces_after_word)
                             spaces_to_add -= spaces_after_word
                         }
@@ -45,11 +46,15 @@ export default class justify_helper {
                     line = ''
                     line_length = 0
                 }
-
+                
                 words_to_add_spaces.push(word)
-            
-                // I add 1 to the line_length because I add a space after each word
-                line_length += word.length + 1
+
+                // I add 1 to the line_length because I add a space before each word except for the first one
+                if (line_length === 0) {
+                    line_length += word.length
+                } else {
+                    line_length += word.length + 1
+                }
 
                 // if the word is a new line, I add the spaces and reset the line_length
                 if (index === words.length - 1) {

@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "test": "jest",
+    "test": "jest --silent",
     "migrate": "npx prisma migrate dev --name migrated",
     "dev": "nodemon src/server.ts",
     "studio": "npx prisma studio"

@@ -1,8 +1,10 @@
 import prisma from '../utils/prisma.client'
+import jwt from 'jsonwebtoken'
 
 export default class user {
     static async create_user(email: string) {
         try {
+            if (!email) throw new Error()
             const user = await prisma.user.create({
                 data: {
                     email
@@ -21,6 +23,7 @@ export default class user {
                     id
                 }
             })
+            if (!user) throw new Error()
             return user
         } catch (error) {
             throw new Error('Error while getting user')
@@ -34,6 +37,7 @@ export default class user {
                     email
                 }
             })
+            if (!user) throw new Error()
             return user
         } catch (error) {
             throw new Error('Error while getting user by email')
@@ -52,7 +56,7 @@ export default class user {
             })
             return user
         } catch (error) {
-            throw new Error('Error while updating user word count')
+            throw new Error('Error while setting user word count')
         }
     }
 
@@ -68,7 +72,7 @@ export default class user {
             })
             return user
         } catch (error) {
-            throw new Error('Error while setting user cap')
+            throw new Error('Error while setting user word_cap')
         }
     }
 
@@ -85,6 +89,19 @@ export default class user {
             return user
         } catch (error) {
             throw new Error('Error while setting user token')
+        }
+    }
+
+    static async delete_user(id: number) {
+        try {
+            const user = await prisma.user.delete({
+                where: {
+                    id
+                }
+            })
+            return user
+        } catch (error) {
+            throw new Error('Error while deleting user')
         }
     }
 }
