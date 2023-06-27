@@ -9,16 +9,18 @@ export default class token_controller {
             console.log('+++++ provide_token +++++')
 
             const { email } = req.body
-            console.log('email: ', email)
             if (!email) throw new Error('Email is required')
+            console.log('email: ', email)
             
             const jwtSecret = process.env.JWT_SECRET
             if (!jwtSecret) throw new Error('JWT_SECRET is not defined')
 
             const this_user = await user.get_user_by_email(email) || await user.create_user(email)
             let token = ''
-
+            
             if (!this_user.token || token_helper.is_token_expired(this_user.token)) {
+                console.log("Either no token or token is expired. Creating new token.")
+
                 token = jwt.sign(
                     { id: this_user.id },
                     jwtSecret,
