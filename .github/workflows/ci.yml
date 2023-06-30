@@ -12,6 +12,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: pnpm/action-setup@v2
+              with:
+                  version: 8.6.0
             - name: Install dependencies
               run: pnpm install
             - name: Run lint
@@ -22,6 +24,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: pnpm/action-setup@v2
+              with:
+                    version: 8.6.0
             - name: Install dependencies
               run: pnpm install
             - name: run tests
