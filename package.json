@@ -4,11 +4,13 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
+    "start": "node src/server.ts",
     "test": "jest --silent",
     "migrate": "npx prisma migrate dev --name migrated",
     "dev": "nodemon src/server.ts",
     "studio": "npx prisma studio",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "docker build -t basic_rest_api ."
   },
   "keywords": [],
   "author": "",
