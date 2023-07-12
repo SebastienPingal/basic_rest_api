@@ -30,9 +30,13 @@ describe('justify_controller', () => {
     app.post('/no_user', justify_controller.justify_text)
   })
 
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   it('should error if user exceed his word cap', async () => {
     mock_user.word_count = 80000
-    mock_check_user_quota.mockRejectedValueOnce(new Error('Payment Required'))
+    mock_check_user_quota.mockRejectedValue(new Error('Payment Required'))
 
     const response = await request(app)
       .post('/')
@@ -53,9 +57,9 @@ describe('justify_controller', () => {
 
   it('should return the justified text and the words remaining', async () => {
     mock_user.word_count = 0
-    mock_check_user_quota.mockReturnValueOnce(true)
-    mock_count_words.mockReturnValueOnce(4)
-    mock_justify_text.mockReturnValueOnce('C\'est  justifié')
+    mock_check_user_quota.mockReturnValue(true)
+    mock_count_words.mockReturnValue(4)
+    mock_justify_text.mockReturnValue('C\'est  justifié')
 
     const response = await request(app)
       .post('/')

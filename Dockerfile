@@ -6,12 +6,10 @@ COPY package.json ./
 
 RUN npm install
 
-EXPOSE 3000
-
 COPY . .
+
+EXPOSE 3000
 
 RUN npx prisma generate
 
-RUN npx tsc
-
-CMD [ "node", "dist/server.js" ]
+CMD npm run migrate && npm run dev
