@@ -13,14 +13,14 @@ describe('token_controller', () => {
   const mock_create_user = user.create_user as jest.Mock
   const mock_set_user_token = user.set_user_token as jest.Mock
   const mock_set_user_word_count = user.set_user_word_count as jest.Mock
-  const mock_is_token_expired = token_helper.is_token_expired as jest.Mock
+  const mock_is_token_expired = token_helper.\;'' as jest.Mock
   let originalJwtSecret: string | undefined
 
   beforeAll(() => {
     app = express()
     app.use(express.json())
     app.post('/', token_controller.provide_token)
-    originalJwtSecret = process.env.JWT_SECRET
+    originalJwtSecret = process.env.JWT_SECRET ?? "mysecret869"
   })
 
   afterEach(() => {
