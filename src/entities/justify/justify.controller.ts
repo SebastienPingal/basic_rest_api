@@ -9,6 +9,10 @@ export default class justify_controller {
       console.log('+++++ justify_text +++++')
       const this_user = req.user as User
 
+      if (!this_user) {
+        throw new Error('User is required')
+      }
+
       const text = req.body
       let justified_text = ''
       const words_in_text = justify_helper.count_words(text)

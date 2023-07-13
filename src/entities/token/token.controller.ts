@@ -16,12 +16,8 @@ export default class token_controller {
       const jwtSecret = process.env.JWT_SECRET
       if (!jwtSecret) throw new Error('JWT_SECRET is not defined')
 
-      let this_user
-      try {
-        this_user = await user.get_user_by_email(email)
-      } catch (error) {
-        this_user = await user.create_user(email)
-      }
+      const this_user = await user.get_user_by_email(email) || await user.create_user(email)
+
       let token = ''
 
       if (!this_user.token || token_helper.is_token_expired(this_user.token)) {

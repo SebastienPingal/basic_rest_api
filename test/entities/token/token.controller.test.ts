@@ -23,8 +23,8 @@ describe('token_controller', () => {
     originalJwtSecret = process.env.JWT_SECRET
   })
 
-  beforeEach(() => {
-    jest.clearAllMocks()
+  afterEach(() => {
+    jest.restoreAllMocks()
   })
 
   afterAll(() => {

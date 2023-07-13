@@ -30,13 +30,15 @@ describe('justify_controller', () => {
     app.post('/no_user', justify_controller.justify_text)
   })
 
-  beforeEach(() => {
+  afterEach(() => {
     jest.clearAllMocks()
   })
 
   it('should error if user exceed his word cap', async () => {
     mock_user.word_count = 80000
-    mock_check_user_quota.mockRejectedValue(new Error('Payment Required'))
+    mock_check_user_quota.mockImplementation(() => {
+      throw new Error('Payment Required')
+    })
 
     const response = await request(app)
       .post('/')

@@ -2,11 +2,13 @@ import justify_router from '../../../src/entities/justify/justify.router'
 import request from 'supertest'
 import express, { type Request, type Response, type NextFunction } from 'express'
 import justify_controller_class from '../../../src/entities/justify/justify.controller'
+import user from '../../../src/models/user'
 import { check_text_plain_type } from '../../../src/utils/middlewares'
 import jwt from 'jsonwebtoken'
 
 jest.mock('../../../src/entities/justify/justify.controller')
 jest.mock('../../../src/utils/middlewares')
+jest.mock('../../../src/models/user')
 
 describe('justify_router', () => {
   let app: express.Application
@@ -15,6 +17,7 @@ describe('justify_router', () => {
   if (!jwtSecret) throw new Error('JWT_SECRET is not defined')
   const mock_check_text_plain_type = check_text_plain_type as jest.Mock
   const mock_justify_text = justify_controller_class.justify_text as jest.Mock
+  const mock_get_user = user.get_user as jest.Mock
 
   beforeAll(async () => {
     app = express()
@@ -27,12 +30,17 @@ describe('justify_router', () => {
     )
   })
 
-  it('should trigger all the middleware and then the controller', async () => {
+  it('should trigger all the middleware and the controller', async () => {
     mock_check_text_plain_type.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
       next()
     })
     mock_justify_text.mockImplementationOnce((req: Request, res: Response) => {
       res.json({ test: 'test' })
+    })
+    mock_get_user.mockImplementationOnce(() => {
+      return {
+        id: 1
+      }
     })
 
     const response = await request(app)
