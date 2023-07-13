@@ -13,8 +13,7 @@ jest.mock('../../../src/models/user')
 describe('justify_router', () => {
   let app: express.Application
   let token = ''
-  const jwtSecret = process.env.JWT_SECRET
-  if (!jwtSecret) throw new Error('JWT_SECRET is not defined')
+  const jwtSecret = process.env.JWT_SECRET ?? 'mysecret869'
   const mock_check_text_plain_type = check_text_plain_type as jest.Mock
   const mock_justify_text = justify_controller_class.justify_text as jest.Mock
   const mock_get_user = user.get_user as jest.Mock

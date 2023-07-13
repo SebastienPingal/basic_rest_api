@@ -13,8 +13,7 @@ export default class token_controller {
 
       console.log('email: ', email)
 
-      const jwtSecret = process.env.JWT_SECRET
-      if (!jwtSecret) throw new Error('JWT_SECRET is not defined')
+      const jwtSecret = process.env.JWT_SECRET ?? 'mysecret869'
 
       const this_user = await user.get_user_by_email(email) || await user.create_user(email)
 
