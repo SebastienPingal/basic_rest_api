@@ -34,4 +34,4 @@ jobs:
           environment_name: Justify-env
           version_label: ${{ github.run_id }}
           region: us-east-1
-          deployment_package: application.zip
+          deployment_package: deploy.zip
