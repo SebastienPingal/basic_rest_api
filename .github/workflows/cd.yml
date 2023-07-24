@@ -23,7 +23,7 @@ jobs:
         run: npm run build
 
       - name: Generate deployment package
-        run: zip -r deploy.zip . -x '*.git*'
+        run: zip -r deploy.zip . -x '*.git*' -x '*node_modules*/*'
 
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v15
@@ -32,6 +32,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: justify
           environment_name: Justify-env-new
-          version_label: ${{ github.run_id }}-${{ github.run_number }}-${{ github.sha }}-${{ github.run_attempt }}          
+          version_label: ${{ github.run_id }}-${{ github.run_number }}-${{ github.sha }}-${{ github.run_attempt }}
           region: us-east-1
           deployment_package: deploy.zip
