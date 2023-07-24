@@ -38,3 +38,4 @@ prisma/migrations
 .DS_Store
 
 .env
+.github/workflows/.cd.yml.swp
