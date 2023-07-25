@@ -13,3 +13,8 @@ app.listen(3000, () => {
 
 app.use('/token', token_router)
 app.use('/justify', justify_router)
+
+// health check
+app.get('/', (req, res) => {
+  res.send('OK')
+})
