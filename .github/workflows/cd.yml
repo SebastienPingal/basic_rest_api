@@ -16,9 +16,6 @@ jobs:
         with:
           node-version: 16
 
-      - name: Build
-        run: npm run build
-
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*' -x '*node_modules*/*'
 
