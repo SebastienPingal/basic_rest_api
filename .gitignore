@@ -39,3 +39,6 @@ prisma/migrations
 
 .env
 .github/workflows/.cd.yml.swp
+
+# dist 
+dist
