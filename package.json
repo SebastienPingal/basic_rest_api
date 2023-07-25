@@ -10,7 +10,8 @@
     "dev": "nodemon src/server.ts",
     "studio": "npx prisma studio",
     "lint": "eslint .",
-    "build": "tsc"
+    "build": "tsc",
+    "prisma:generate": "npx prisma generate"
   },
   "keywords": [],
   "author": "",
