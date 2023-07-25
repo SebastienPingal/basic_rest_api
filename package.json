@@ -4,14 +4,13 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "npx prisma generate && node dist/server.js",
     "test": "jest --silent",
     "migrate": "npx prisma migrate dev --name migrated",
     "dev": "nodemon src/server.ts",
     "studio": "npx prisma studio",
     "lint": "eslint .",
-    "build": "tsc",
-    "prisma:generate": "npx prisma generate"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
