@@ -33,7 +33,7 @@ describe('token_controller', () => {
 
   it('should create a new user and create a token', async () => {
     mock_get_user_by_email.mockImplementation(() => {
-      return undefined
+      throw new Error()
     })
     mock_create_user.mockResolvedValue({ id: 1 })
     mock_is_token_expired.mockReturnValue(true)
