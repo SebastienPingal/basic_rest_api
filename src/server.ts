@@ -4,11 +4,13 @@ import justify_router from './entities/justify/justify.router'
 
 const app = express()
 
+const port = process.env.PORT ?? 3000
+
 app.use(express.text({ type: 'text/plain' }))
 app.use(express.json())
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000')
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
 })
 
 app.use('/token', token_router)
