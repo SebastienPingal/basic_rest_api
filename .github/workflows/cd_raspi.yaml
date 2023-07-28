@@ -21,8 +21,8 @@ jobs:
 
       # You can skip the zip step if you are directly pulling and building on the Raspberry Pi
 
+      - name: Copy files to Raspberry Pi
+        run: sshpass -p ${{ secrets.RASPBERRY_PI_PASSWORD }} scp -P 2928 -r ./ piemontaise@86.195.20.2:/Documents/PROG/basic_rest_api
+
       - name: Deploy to Raspberry Pi
-        run: |
-          sshpass -p ${{ secrets.RASPBERRY_PI_SSH_PASSWORD }} ssh -p 2928 piemontaise@86.195.20.2 'npm install && npx prisma generate && npm start'
-        env:
-          CI: true
+        run: sshpass -p ${{ secrets.RASPBERRY_PI_PASSWORD }} ssh -p 2928 piemontaise@86.195.20.2 'cd Documents/PROG/basic_rest_api npm install && npx prisma generate && npm start'
