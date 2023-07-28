@@ -21,9 +21,13 @@ jobs:
 
       # You can skip the zip step if you are directly pulling and building on the Raspberry Pi
 
-      - name: Copy files to Raspberry Pi
-        run: sshpass -p ${{ secrets.RASPBERRY_PI_PASSWORD }} -- scp -P 2928 -oStrictHostKeyChecking=no -r ./ piemontaise@86.195.20.2:/Documents/PROG/basic_rest_api
-
-
-      - name: Deploy to Raspberry Pi
-        run: sshpass -p ${{ secrets.RASPBERRY_PI_PASSWORD }} -- ssh -p 2928 -oStrictHostKeyChecking=no piemontaise@86.195.20.2 'cd Documents/PROG/basic_rest_api && npm install && npx prisma generate && npm start'
+      - name: "Push to server"
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.RASPI_SSH_HOST }}
+          username: ${{ secrets.RASPI_SSH_USERNAME }}
+          key: ${{ secrets.RASPI_SSH_KEY }}
+          port: ${{ secrets.RASPI_SSH_PORT }}
+          source: "public/"
+          strip_components: 1
+          target: "/var/www/html"
