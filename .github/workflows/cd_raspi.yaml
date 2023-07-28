@@ -23,6 +23,6 @@ jobs:
 
       - name: Deploy to Raspberry Pi
         run: |
-          sshpass -p *** ssh -p 2928 piemontaise@86.195.20.2 'npm install && npx prisma generate && npm start'
+          sshpass -p ${{ secrets.RASPBERRY_PI_SSH_PASSWORD }} ssh -p 2928 piemontaise@86.195.20.2 'npm install && npx prisma generate && npm start'
         env:
           CI: true
