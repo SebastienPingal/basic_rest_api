@@ -1,0 +1,28 @@
+name: Raspberry Pi Deployment Pipeline
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Build
+        run: npm install && npm run build
+
+      # You can skip the zip step if you are directly pulling and building on the Raspberry Pi
+
+      - name: Deploy to Raspberry Pi
+        run: |
+          sshpass -p ${{ secrets.RASPBERRY_PI_SSH_PASSWORD }} ssh -p 2928 piemontaise@86.195.20.2 'npm install && npx prisma gennerate && npm start'
+        env:
+          CI: true
