@@ -26,7 +26,7 @@ jobs:
         with:
           host: ${{ secrets.RASPI_SSH_HOST }}
           username: ${{ secrets.RASPI_SSH_USERNAME }}
-          key: ${{ secrets.RASPI_SSH_KEY }}
+          password: ${{ secrets.RASPI_SSH_KEY }}
           port: ${{ secrets.RASPI_SSH_PORT }}
           source: "dist/"
           strip_components: 1
