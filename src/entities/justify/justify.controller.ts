@@ -4,7 +4,7 @@ import justify_helper from './justify.helper'
 import type { User } from '../../../types'
 
 export default class justify_controller {
-  static async justify_text (req: Request, res: Response) {
+  static async justify_text(req: Request, res: Response) {
     try {
       console.log('+++++ justify_text +++++')
       const this_user = req.user as User
@@ -18,17 +18,11 @@ export default class justify_controller {
       const words_in_text = justify_helper.count_words(text)
       const words_remaining = this_user.word_cap - this_user.word_count - words_in_text
 
-      try {
-        justify_helper.check_user_quota(
-          this_user.word_cap,
-          this_user.word_count,
-          words_in_text
-        )
-      } catch (error) {
-        const typed_error = error as Error
-        res.status(402).json({ error: typed_error.message })
-        return
-      }
+      justify_helper.check_user_quota(
+        this_user.word_cap,
+        this_user.word_count,
+        words_in_text
+      )
 
       justified_text = justify_helper.justify_text(text)
 
@@ -39,9 +33,17 @@ export default class justify_controller {
 
       console.log('+++++ justify_text done +++++')
       res.json({ words_remaining, justified_text })
+
     } catch (error) {
-      const typed_error = error as Error
-      res.status(500).json({ error: typed_error.message })
+      const typedError = error as Error;
+
+      if (typedError.message === 'Payment Required') {
+        res.status(402).json({ error: typedError.message })
+
+      } else {
+        const typed_error = error as Error
+        res.status(500).json({ error: typed_error.message })
+      }
     }
   }
 }

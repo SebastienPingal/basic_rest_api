@@ -10,7 +10,7 @@ export default class justify_helper {
     return true
   }
 
-  static justify_text (text: string) {
+  static justify_text(text: string) {
     const paragraphs = text.split('\n')
     const justified_paragraphs: string[] = []
 

@@ -10,10 +10,7 @@ export default class token_controller {
 
       const { email } = req.body
       if (!email) throw new Error('Email is required')
-
       console.log('email: ', email)
-
-      const jwtSecret = process.env.JWT_SECRET ?? 'mysecret869'
 
       let this_user
       try {
@@ -27,6 +24,7 @@ export default class token_controller {
       if (!this_user.token || token_helper.is_token_expired(this_user.token)) {
         console.log('Either no token or token is expired. Creating new token.')
 
+        const jwtSecret = process.env.JWT_SECRET ?? 'mysecret869'
         token = jwt.sign(
           { id: this_user.id },
           jwtSecret,
@@ -38,7 +36,7 @@ export default class token_controller {
         token = this_user.token
       }
 
-      console.log('----- provide_token -----')
+      console.log('+++++ provide_token +++++')
       res.json({ token })
     } catch (error) {
       const typed_error = error as Error
